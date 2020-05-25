@@ -7,7 +7,7 @@ class RevisionsController < AuthenticatedController
   before_action :load_record, except: [ :trash, :recover ]
 
   def index
-    redirect_to action: :show, id: @record.versions.where(event: 'update').last.try(:id) || 0
+    redirect_to action: :show, id: @record.revisable_versions.last.try(:id) || 0
   end
 
   def show
@@ -33,6 +33,14 @@ class RevisionsController < AuthenticatedController
     end
     
     redirect_to project_trash_path(current_project)
+  end
+
+  def destroy
+    RevisionCollapser.discard_and_revert(@record)
+
+    # This is cheeky because either board and list won't be present or node
+    # won't be present and removing nils makes valid paths.
+    redirect_to polymorphic_path([current_project, @board, @list, @node, @record].concat)
   end
 
   private

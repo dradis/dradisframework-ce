@@ -163,6 +163,13 @@ describe 'Issues pages' do
         it_behaves_like 'a textile form view', Issue
         it_behaves_like 'an editor that remembers what view you like'
 
+        describe 'auto-save' do
+          let(:autosaveable) { create(:issue) }
+          let(:path_params) { [current_project, autosaveable] }
+          it_behaves_like 'an editor with server side auto-save'
+          it_behaves_like 'a record with auto-save revisions'
+        end
+
         before do
           issuelib = current_project.issue_library
           @issue = create(:issue, node: issuelib, updated_at: 2.seconds.ago)

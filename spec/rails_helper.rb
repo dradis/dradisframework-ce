@@ -7,6 +7,8 @@ require 'spec_helper'
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
+require 'action_cable/testing/rspec'
+require 'action_cable/testing/rspec/features'
 require 'capybara/rspec'
 require 'paper_trail/frameworks/rspec'
 require 'shoulda/matchers'
@@ -74,6 +76,8 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   # config.include ControllerMacros, type: :controller
+  config.include ActiveJob::TestHelper, type: :feature
+  config.include ActiveJob::TestHelper, type: :request
   config.include ControllerMacros, type: :feature
   # config.include SelecterHelper,   type: :feature
   # config.include SupportHelper,    type: :controller

@@ -89,7 +89,6 @@ describe "note pages" do
     end
 
     let(:submit_form) { click_button "Update Note" }
-    let(:cancel_form) { click_link "Cancel" }
 
     it "has a form to edit the note" do
       should have_field :note_text
@@ -99,6 +98,13 @@ describe "note pages" do
     it "uses the full-screen editor plugin" # TODO
 
     it_behaves_like "a form with a help button"
+
+    describe 'auto-save' do
+      let(:autosaveable) { create(:note, node: @node) }
+      let(:path_params) { [current_project, @node, autosaveable] }
+      it_behaves_like 'an editor with server side auto-save'
+      it_behaves_like 'a record with auto-save revisions'
+    end
 
     describe 'textile form view' do
       let(:action_path) { edit_project_node_note_path(current_project, @node, @note) }
@@ -150,13 +156,6 @@ describe "note pages" do
       include_examples "doesn't create an Activity"
     end
 
-    describe "cancel button" do
-      it "returns to the note page" do
-        cancel_form
-        expect(current_path).to eq project_node_note_path(current_project, @node, @note)
-      end
-    end
-
     let(:model) { @note }
     include_examples 'nodes pages breadcrumbs', :edit, Note
 
@@ -173,7 +172,6 @@ describe "note pages" do
     end
   end
 
-
   describe "new page", js: true do
     before do
       visit new_project_node_note_path(current_project, @node, params)
@@ -181,7 +179,6 @@ describe "note pages" do
     end
 
     let(:submit_form) { click_button "Create Note" }
-    let(:cancel_form) { click_link "Cancel" }
 
     context "when no template is specified" do
       let(:params) { {} }
@@ -228,13 +225,6 @@ describe "note pages" do
         end
 
         include_examples "doesn't create an Activity"
-      end
-
-      describe "cancel button" do
-        it "returns to the node page" do
-          cancel_form
-          expect(current_path).to eq project_node_path(current_project, @node)
-        end
       end
     end
 

@@ -15,4 +15,7 @@ class RevisionPresenter < BasePresenter
     end
   end
 
+  def revisable?
+    revision.item.class::REVISABLE_EVENTS.values.include? revision.event
+  end
 end

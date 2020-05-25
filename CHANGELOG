@@ -15,8 +15,9 @@ v3.17 (Month 2020)
     - Update comments feed to show author's name instead of email
   * Display note and evidence titles in breadcrumbs
   * Editor improvements:
-    - New form-view to edit each field individually
     - Formatting toolbar to help with markup
+    - New form-view to edit each field individually
+    - Server side auto saving with revision history
     - Side-by-side editor preview that auto-updates
   * Link to Methodology from project summary chart
   * Move resource action links to dots-menu in breadcrumbs

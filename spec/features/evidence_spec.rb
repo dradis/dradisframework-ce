@@ -104,6 +104,12 @@ describe 'evidence' do
 
     it_behaves_like 'a form with a help button'
 
+    describe 'auto-save' do
+      let(:autosaveable) { create(:evidence, node: @node) }
+      let(:path_params) { [current_project, @node, autosaveable] }
+      it_behaves_like 'an editor with server side auto-save'
+    end
+
     describe 'textile form view' do
       let(:action_path) { edit_project_node_evidence_path(current_project, @node, @evidence) }
       let(:item) { @evidence }
