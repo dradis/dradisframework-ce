@@ -4,6 +4,7 @@ v3.#.# (MMM’YY)
   * Update top navigation link styles and collapsed menu
   * Upgraded gems: rack, sanitize, sassc
   * Bugs fixed:
+    - Prevent HTML exports from rendering with the wrong template when multiple tabs are open
     - Comments:
       - Fix `edit` link available while editing
       - Fix comment borders remaining after deleting comments
