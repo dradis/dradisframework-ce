@@ -49,7 +49,7 @@ describe 'Issues pages' do
       end
 
       describe 'new page', js: true do
-        let(:submit_form) { click_button 'Create Issue' }
+        let(:submit_form) { find('[data-behavior~=state-submit-button]').click }
 
         let(:action_path) { new_project_issue_path(current_project) }
         it_behaves_like 'a textile form view', Issue
@@ -141,6 +141,21 @@ describe 'Issues pages' do
           end
         end
 
+        context 'when selecting a state for the issue' do
+          it 'creates an issue with the correct state' do
+            Issue.states.each do |state, state_id|
+              visit new_project_issue_path(current_project)
+              within('.state-menu') do
+                find('.dropdown-toggle').click
+                find("[data-state='#{state}']").click
+                find('[data-behavior~=state-submit-button]').click
+              end
+
+              expect(current_project.issues.last.state).to eq(state)
+            end
+          end
+        end
+
         describe 'local caching' do
           let(:add_tags) do
             @tag_1 = current_project.tags.create(name: '!9467bd_critical')
@@ -156,7 +171,7 @@ describe 'Issues pages' do
       end
 
       describe 'edit page', js: true do
-        let(:submit_form) { click_button 'Update Issue' }
+        let(:submit_form) { find('[data-behavior~=state-submit-button]').click }
 
         let(:action_path) { edit_project_issue_path(current_project, @issue) }
         let(:item) { @issue }
@@ -165,7 +180,7 @@ describe 'Issues pages' do
 
         before do
           issuelib = current_project.issue_library
-          @issue = create(:issue, node: issuelib, updated_at: 2.seconds.ago)
+          @issue = create(:issue, node: issuelib, updated_at: 2.seconds.ago, state: :draft)
           visit edit_project_issue_path(current_project, @issue)
           click_link 'Source'
         end
@@ -175,8 +190,6 @@ describe 'Issues pages' do
           before do
             fill_in :issue_text, with: new_content
           end
-
-          let(:submit_form) { click_button 'Update Issue' }
 
           it 'updates and shows the issue' do
             submit_form
@@ -192,6 +205,19 @@ describe 'Issues pages' do
               submit_form
               expect(@issue.reload.versions.last.whodunnit).to eq @logged_in_as.email
             end
+          end
+
+          it 'updates the issue\'s state' do
+            new_state = 'published'
+
+            within('.state-menu') do
+              find('.dropdown-toggle').click
+              find("[data-state='#{new_state}']").click
+            end
+
+            submit_form
+
+            expect(Issue.find(@issue.id).state).to eq(new_state)
           end
 
           let(:column) { :text }

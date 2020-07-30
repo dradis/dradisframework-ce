@@ -49,10 +49,20 @@
         <div class="tab-pane active" id="info-tab" data-behavior="subscription-actions" data-subscribed="<%= !@subscription.nil? %>" >
           <% cache ['issue-information-tab', @issue] do %>
             <div class="note-text-inner">
-              <h4 class="mb-4 header-underline">Issue information -
-                <span class="actions">
+              <h4 class="d-flex header-underline justify-content-between">Issue information
+                <div class="actions d-flex flex-column align-items-end">
                   <%= tag_and_name_for(@issue) %>
-                </span>
+                  <span>
+                    <% if @issue.state == 'draft' %>
+                      <i class="fa fa-pencil-square-o"></i>
+                    <% elsif @issue.state == 'review' %>
+                      <i class="fa fa-share-square-o"></i>
+                    <% elsif @issue.state == 'published' %>
+                      <i class="fa fa-check-square-o"></i>
+                    <% end %>
+                    <%= Issue.state_names[@issue.state] %>
+                  </span>
+                </div>
               </h4>
               <div class="content-textile">
                 <%= markup(@issue.text) %>

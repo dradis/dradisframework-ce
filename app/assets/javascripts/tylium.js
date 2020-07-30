@@ -54,6 +54,7 @@
 
 //= require tylium/pages/activities
 //= require tylium/pages/boards
+//= require tylium/pages/issues/state_menu
 //= require tylium/pages/nodes/new_form
 //= require tylium/pages/nodes/tables
 //= require tylium/pages/projects/boards_summary

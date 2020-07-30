@@ -83,6 +83,13 @@ code {
   padding: 2px 4px;
 }
 
+.custom-file-label {
+  padding-right: 5.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .custom-select {
   font-size: inherit;
 }
@@ -162,6 +169,11 @@ select {
   select {
     font-family: revert;
   }
+}
+
+.show > .btn-primary.dropdown-toggle {
+  background-color: $darkColor;
+  border-color: $darkColor;
 }
 
 .small {

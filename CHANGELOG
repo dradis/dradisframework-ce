@@ -1,4 +1,5 @@
-[v#.#.#] ([MMM’YY])
+v3.#.# (MMM’YY)
+  * Add states (draft, review, published) to issues
   * [feature #1]
   * [feature #2]
   * [feature ...]
