@@ -3,6 +3,7 @@
     - Labels added under icons
     - Nodes can be added in collapsed state
     - Removed animations and transitions while expanding and collapsing 
+	* Route back to the issue with the evidence tab opened when managing evidence.
   * Upgraded gems: rails
   * Bugs fixed:
     - Editor drag and drop, and copy paste inserts attachments at the cursor

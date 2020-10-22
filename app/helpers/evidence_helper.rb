@@ -1,7 +1,7 @@
 module EvidenceHelper
   def evidence_redirect_path(return_to)
     if return_to == 'issue'
-      [current_project, @evidence.issue]
+      project_issue_path(current_project, @evidence.issue, tab: 'evidence-tab')
     elsif @evidence.persisted?
       [current_project, @node, @evidence]
     else

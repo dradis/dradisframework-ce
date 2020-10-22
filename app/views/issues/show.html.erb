@@ -35,9 +35,21 @@
 <!-- Main content -->
 <div class="row m-0">
   <ul class="tabs-container nav nav-tabs main-tabs w-100">
-    <li class="nav-item"><a href="#info-tab" data-toggle="tab" class="nav-link active"><%= colored_icon_for_model(@issue, 'fa-bug') %> Information</a></li>
-    <li class="nav-item"><a href="#evidence-tab" class="nav-link" data-toggle="tab"><i class="fa fa-laptop"></i> Evidence <span class="badge bg-primary text-white"><%= @issue.evidence.count %></span></a></li>
-    <li class="nav-item"><a href="#activity-tab" class="nav-link" data-toggle="tab"><i class="fa fa-rss"></i> Recent activity</a></li>
+    <%= content_tag :li, class: "nav-item " do %>
+      <a href="#info-tab" class="nav-link <%= 'active' if !params[:tab] || params[:tab] == 'info-tab' %>" data-toggle="tab">
+        <%= colored_icon_for_model(@issue, 'fa-bug') %> Information
+      </a>
+    <% end %>
+    <%= content_tag :li, class: "nav-item" do %>
+      <a href="#evidence-tab" class="nav-link <%= 'active' if params[:tab] == 'evidence-tab' %>" data-toggle="tab">
+        <i class="fa fa-laptop"></i> Evidence <span class="badge bg-primary text-white"><%= @issue.evidence.count %></span>
+      </a>
+    <% end %>
+    <%= content_tag :li, class: "nav-item" do %>
+      <a href="#activity-tab" class="nav-link <%= 'active' if params[:tab] == 'activity-tab' %>" data-toggle="tab">
+        <i class="fa fa-refresh"></i> Recent activity
+      </a>
+    <% end %>
     <%= render_view_hooks 'issues/show-tabs' %>
   </ul>
 </div>
@@ -46,7 +58,7 @@
   <div class="col-12 col-xxl-7 p-0">
     <div class="content-container mt-0 pb-3 mr-xxl-3">
       <div class="tab-content mt-0">
-        <div class="tab-pane active" id="info-tab" data-behavior="subscription-actions" data-subscribed="<%= !@subscription.nil? %>" >
+        <div class="tab-pane <%= 'active' if !params[:tab] || params[:tab] == 'info-tab' %>" id="info-tab" data-behavior="subscription-actions" data-subscribed="<%= !@subscription.nil? %>" >
           <% cache ['issue-information-tab', @issue] do %>
             <div class="note-text-inner">
               <h4 class="mb-4 header-underline">Issue information -
@@ -64,12 +76,12 @@
           <% end %>
         </div>
 
-        <div class="tab-pane" id="evidence-tab">
+        <div class="tab-pane <%= 'active' if params[:tab] == 'evidence-tab' %>" id="evidence-tab">
           <%= render partial: 'evidence' %>
         </div>
 
         <% cache ['issue-activity-tab', @issue, @activities] do %>
-          <div class="tab-pane" id="activity-tab">
+          <div class="tab-pane <%= 'active' if params[:tab] == 'activity-tab' %>" id="activity-tab">
             <%= render partial: 'activity' %>
           </div>
         <% end %>
