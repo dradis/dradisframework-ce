@@ -1,4 +1,5 @@
 [v#.#.#] ([MMM’YY])
+  * Return users to the last view before the session expired
   * Main sidebar improvements:
     - Labels added under icons
     - Nodes can be added in collapsed state

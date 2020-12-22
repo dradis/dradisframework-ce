@@ -55,6 +55,53 @@ describe 'Sessions' do
         expect(page).to have_content('Session timed out!')
       end
     end
+
+    describe 'return after timeout' do
+      let(:project) { Project.find(1) }
+
+      let(:submit_login_details) do
+        fill_in 'login', with: @user.email
+        fill_in 'password', with: password
+        click_button 'Let me in!'
+      end
+
+      before do
+        login
+      end
+
+      it 'redirects to previous page' do
+        Timecop.freeze(Time.now + 1.hour) do
+          visit new_project_issue_path(project)
+          submit_login_details
+          expect(current_path).to eq(new_project_issue_path(project))
+        end
+      end
+
+      context 'when creating evidence in issue page', js: true do
+        let(:issue) { create(:issue, node: project.issue_library) }
+        let(:node) { create(:node, project: project) }
+
+
+        it 'redirects to issue show page' do
+          visit project_issue_path(project, issue)
+
+          within '.tabs-container' do
+            click_link 'Evidence 0'
+          end
+
+          within '#evidence-tab' do
+            find('.js-add-evidence').click
+          end
+
+          Timecop.freeze(Time.now + 1.hour) do
+            click_button 'Save Evidence'
+            expect(current_path).to eq login_path
+            submit_login_details
+            expect(current_path).to eq(project_issue_path(project, issue))
+          end
+        end
+      end
+    end
   end
 
   context 'when the user is deleted' do
