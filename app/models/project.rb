@@ -5,7 +5,7 @@ class Project
   extend ActiveModel::Naming
   include ActiveModel::Validations
 
-  attr_reader :id, :name
+  attr_reader :id, :name, :created_at
 
   # -- Class Methods --------------------------------------------------------
   def self.create(args={})
@@ -31,6 +31,10 @@ class Project
     end
   end
 
+  def ==(item)
+    eql?(item)
+  end
+
   # Override Object's #hash method to better compare Project instances
   def hash
     self.id
@@ -46,13 +50,10 @@ class Project
   def initialize(id: 1, name: 'Dradis Project', **_attrs)
     @id   = id
     @name = name
+    @created_at = 0
   end
 
   def persisted?; true; end
-
-  def activities
-    Activity.all
-  end
 
   def boards
     Board.all
